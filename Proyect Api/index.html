@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Clima</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #resultado {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Consulta el Clima</h1>
+    <input type="text" id="ciudad" placeholder="Ingresa una ciudad">
+    <button id="buscar">Buscar Clima</button>
+    
+    <div id="resultado"></div>
+
+    <script>
+        document.getElementById("buscar").addEventListener("click", obtenerClima);
+
+async function obtenerClima() {
+    const ciudad = document.getElementById("ciudad").value;
+    const apiKey = "TU_API_KEY"; // Reemplaza con tu clave de API de OpenWeatherMap
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric&lang=es`;
+
+    try {
+        const respuesta = await fetch(url);
+        if (!respuesta.ok) {
+            throw new Error("Ciudad no encontrada");
+        }
+        const datos = await respuesta.json();
+        mostrarClima(datos);
+    } catch (error) {
+        document.getElementById("resultado").innerHTML = `<p>Error: ${error.message}</p>`;
+    }
+}
+
+function mostrarClima(datos) {
+    const { name, main, weather } = datos;
+    document.getElementById("resultado").innerHTML = `
+        <h2>Clima en ${name}</h2>
+        <p>Temperatura: ${main.temp}°C</p>
+        <p>Condición: ${weather[0].description}</p>
+    `;
+}
+
+    </script>
+
+</body>
+</html>
