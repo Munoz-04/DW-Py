@@ -1,3 +1,4 @@
+
 edad = int(input("Ingrese su edad: "))
 try:
     if edad < 18:
